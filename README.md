@@ -29,3 +29,30 @@ A full-stack, enterprise-grade Gym Management System built using **Django 6.0**,
    ```bash
    git clone [https://github.com/shrivastavaamancs-sys/gym-management-system.git](https://github.com/shrivastavaamancs-sys/gym-management-system.git)
    cd gym-management-system
+
+
+Create and activate a virtual environment:
+
+Bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
+Install dependencies:
+
+Bash
+pip install django djangorestframework djangorestframework-simplejwt
+Apply database migrations:
+
+Bash
+python manage.py makemigrations
+python manage.py migrate
+Run the development server:
+
+Bash
+python manage.py runserver
+Open your browser and navigate to: http://127.0.0.1:8000/
+
+
+---
+
+### GitHub Repo ke liye Short Description:
+> **`Full-stack Gym Management System built with Django, featuring modern responsive UI, aut
