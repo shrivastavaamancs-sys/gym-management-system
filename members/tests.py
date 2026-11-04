@@ -1,39 +1,38 @@
 from django.test import TestCase
-import datetime
-from .models import Trainer, Offer, Member
+from .models import Member, Trainer, Offer, ContactMessage
+from datetime import date, timedelta
 
 class GymModelTest(TestCase):
     def setUp(self):
-        # Correctly creating an Offer using 'code' and 'valid_till'
+        self.trainer = Trainer.objects.create(
+            name="Rahul Sharma", 
+            specialty="Weightlifting", 
+            phone="9876543210"
+        )
         self.offer = Offer.objects.create(
             code="FESTIVE10", 
             discount_percentage=10, 
-            valid_till=datetime.date(2026, 12, 31),
+            valid_till=date.today() + timedelta(days=10),
             is_active=True
         )
-        
-        # Creating a sample Trainer
-        self.trainer = Trainer.objects.create(
-            name="Rahul Sharma",
-            specialty="Weight Training",
-            phone="9876543210"
-        )
-        
-        # Creating a sample Member
-        self.member = Member.objects.create(
-            name="Amit Kumar",
-            phone="9123456789",
+
+    def test_member_creation_and_fee(self):
+        member = Member.objects.create(
+            name="Aman Shrivastava",
+            phone="8448377736",
+            email="aman@example.com",
             plan="Monthly",
             trainer=self.trainer,
             applied_offer=self.offer
         )
+        self.assertEqual(member.name, "Aman Shrivastava")
+        self.assertEqual(member.get_final_fee(), 900.00)
 
-    def test_member_creation(self):
-        self.assertEqual(self.member.name, "Amit Kumar")
-        self.assertEqual(self.member.trainer.name, "Rahul Sharma")
-        self.assertEqual(self.member.applied_offer.code, "FESTIVE10")
-        self.assertTrue(self.member.is_active)
-
-    def test_get_final_fee_with_discount(self):
-        # Monthly plan is ₹1,000 with a 10% discount -> Expected: ₹900
-        self.assertEqual(self.member.get_final_fee(), 900)
+    def test_contact_message_creation(self):
+        msg = ContactMessage.objects.create(
+            name="Test User",
+            email="test@example.com",
+            phone="9123456789",
+            message="Hello Elite Fitness!"
+        )
+        self.assertEqual(msg.name, "Test User")

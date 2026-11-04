@@ -196,7 +196,7 @@
             font-size: 16px;
         }
 
-        /* Enhanced Card & Image Styling with Hover, Shadow & Borders */
+        /* Card & Image Styling with Hover, Shadow & Borders */
         .health-card, .service-card, .trainer-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -206,14 +206,12 @@
             overflow: hidden;
         }
 
-        /* Awesome Hover Lift & Shadow Effect */
         .health-card:hover, .service-card:hover, .trainer-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12);
             border-color: var(--accent);
         }
 
-        /* Image Zoom & Smooth Transition */
         .trainer-card img, .about-img img {
             transition: transform 0.5s ease;
             width: 100%;
@@ -286,10 +284,6 @@
             text-align: center;
             padding-bottom: 30px;
             border-top: 4px solid var(--accent);
-        }
-
-        .service-card:hover {
-            box-shadow: 0 20px 35px rgba(229, 62, 62, 0.15);
         }
 
         .service-card h3 {
@@ -423,7 +417,7 @@
             <li><a href="#trainers">Trainers</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
-        <a href="{% url 'member_list' %}" class="btn-dash">Admin Dashboard</a>
+        <a href="{% url 'admin:index' %}" class="btn-dash">Admin Dashboard</a>
     </nav>
 
     <!-- Hero Section with Automatic Slider -->
@@ -433,7 +427,7 @@
                 <h1>Transform Your Body <span>Shape Your Life</span></h1>
                 <p>Join Elite Fitness Hub today with exciting festive and discount offers. Professional trainers, modern equipment, and customized fitness programs.</p>
                 <div class="hero-btns">
-                    <a href="{% url 'add_member' %}" class="btn-primary">Join Now</a>
+                    <a href="#services" class="btn-primary">Join Now</a>
                     <a href="#services" class="btn-secondary">Explore Plans</a>
                 </div>
             </div>
@@ -444,7 +438,7 @@
                 <h1>State-of-the-Art <span>Gym Equipment</span></h1>
                 <p>Experience premium quality weights, cardio machines, and functional training areas designed for maximum results.</p>
                 <div class="hero-btns">
-                    <a href="{% url 'add_member' %}" class="btn-primary">Join Now</a>
+                    <a href="#services" class="btn-primary">Join Now</a>
                     <a href="#services" class="btn-secondary">Explore Plans</a>
                 </div>
             </div>
@@ -455,7 +449,7 @@
                 <h1>Expert Guidance <span>Personalized Training</span></h1>
                 <p>Train under certified professional coaches who help you achieve your fitness goals safely and efficiently.</p>
                 <div class="hero-btns">
-                    <a href="{% url 'add_member' %}" class="btn-primary">Join Now</a>
+                    <a href="#services" class="btn-primary">Join Now</a>
                     <a href="#trainers" class="btn-secondary">Our Trainers</a>
                 </div>
             </div>
@@ -513,7 +507,7 @@
                     <li>Basic Fitness Assessment</li>
                     <li>Cardio & Weight Training</li>
                 </ul>
-                <a href="{% url 'add_member' %}" class="btn-primary" style="display: inline-block; margin-top: 10px;">Select Plan</a>
+                <a href="#contact" class="btn-primary" style="display: inline-block; margin-top: 10px;">Select Plan</a>
             </div>
             <div class="service-card" style="border-top-color: #3182ce;">
                 <h3>Quarterly Plan</h3>
@@ -524,7 +518,7 @@
                     <li>1 Personal Training Session</li>
                     <li>Steam Bath Included</li>
                 </ul>
-                <a href="{% url 'add_member' %}" class="btn-primary" style="display: inline-block; margin-top: 10px; background: #3182ce;">Select Plan</a>
+                <a href="#contact" class="btn-primary" style="display: inline-block; margin-top: 10px; background: #3182ce;">Select Plan</a>
             </div>
             <div class="service-card" style="border-top-color: #2b6cb0;">
                 <h3>Yearly Plan (Best Value)</h3>
@@ -535,7 +529,7 @@
                     <li>Special Festive Discounts Applicable</li>
                     <li>Complimentary Supplements Kit</li>
                 </ul>
-                <a href="{% url 'add_member' %}" class="btn-primary" style="display: inline-block; margin-top: 10px; background: #2b6cb0;">Select Plan</a>
+                <a href="#contact" class="btn-primary" style="display: inline-block; margin-top: 10px; background: #2b6cb0;">Select Plan</a>
             </div>
         </div>
     </section>
@@ -576,16 +570,23 @@
         <div class="contact-container">
             <div class="contact-form">
                 <h3 style="margin-bottom: 20px; color: var(--primary);">Send Us a Message</h3>
-                <form>
-                    <input type="text" placeholder="Your Full Name" required>
-                    <input type="email" placeholder="Your Email Address" required>
-                    <input type="text" placeholder="Phone Number (10 digits)" required>
-                    <textarea placeholder="Your Message or Inquiry..." required></textarea>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <p style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %}; margin-bottom: 15px; font-weight: bold;">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.name }}
+                    {{ form.email }}
+                    {{ form.phone }}
+                    {{ form.message }}
                     <button type="submit" class="btn-primary" style="width: 100%; border: none; cursor: pointer;">Send Message</button>
                 </form>
             </div>
             <div class="map-box">
-                <!-- Clean Embedded Map -->
                 <iframe src="https://maps.google.com/maps?q=Indore,Madhya+Pradesh&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
@@ -607,7 +608,6 @@
             slides[currentSlide].classList.add('active');
         }
 
-        // Har 4 second mein image change hogi
         setInterval(nextSlide, 4000);
     </script>
 </body>
